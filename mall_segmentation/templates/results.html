@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer Segmentation Results</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 20px;
+            background-color: #f8f9fa;
+        }
+        .card {
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        table {
+            font-size: 0.9rem;
+        }
+        .section-header {
+            padding: 10px 0;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #4e73df;
+        }
+        .dashboard-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Analysis Results</li>
+            </ol>
+        </nav>
+
+        <h1 class="text-center mb-4">Customer Segmentation Analysis Results</h1>
+        
+        <!-- Overview Section -->
+        <div class="section-header">
+            <h2>Overview</h2>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        Analysis Summary
+                    </div>
+                    <div class="card-body">
+                        <p>The K-Means clustering algorithm has identified <strong>{{ optimal_clusters }}</strong> optimal customer segments based on Annual Income and Spending Score.</p>
+                        <p>These segments represent distinct customer groups with similar shopping behaviors and income levels that can be targeted with specific marketing strategies.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Optimal Clusters Section -->
+        <div class="section-header">
+            <h2>Optimal Cluster Determination</h2>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        Elbow Method & Silhouette Score
+                    </div>
+                    <div class="card-body text-center">
+                        <p>The optimal number of clusters was determined using both the Elbow Method and Silhouette Score analysis:</p>
+                        <img src="data:image/png;base64,{{ elbow_plot }}" class="dashboard-image" alt="Elbow Method Plot">
+                        <p>The Elbow Method shows the point where adding more clusters doesn't significantly reduce the within-cluster sum of squares (WCSS).</p>
+                        <p>The Silhouette Score measures how similar an object is to its own cluster compared to other clusters, with higher values indicating better defined clusters.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 2D Visualization Section -->
+        <div class="section-header">
+            <h2>2D Customer Segmentation</h2>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        Customer Segments (Annual Income vs. Spending Score)
+                    </div>
+                    <div class="card-body text-center">
+                        <img src="data:image/png;base64,{{ cluster_plot }}" class="dashboard-image" alt="Customer Segments Plot">
+                        <p>The plot above shows customer segments based on Annual Income (x-axis) and Spending Score (y-axis).</p>
+                        <p>Each color represents a different customer segment, and the star markers indicate the centroids (center points) of each cluster.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Cluster Analysis Section -->
+        <div class="section-header">
+            <h2>Segment Analysis</h2>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header bg-warning text-dark">
+                        Cluster Characteristics
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Cluster</th>
+                                        <th>Size</th>
+                                        <th>Percentage</th>
+                                        <th>Avg Age</th>
+                                        <th>Avg Annual Income</th>
+                                        <th>Avg Spending Score</th>
+                                        <th>Males</th>
+                                        <th>Females</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for cluster in analysis %}
+                                    <tr>
+                                        <td>{{ cluster.Cluster }}</td>
+                                        <td>{{ cluster.Size }}</td>
+                                        <td>{{ cluster.Percentage }}</td>
+                                        <td>{{ cluster['Avg Age'] }}</td>
+                                        <td>{{ cluster['Avg Annual Income'] }}</td>
+                                        <td>{{ cluster['Avg Spending Score'] }}</td>
+                                        <td>{{ cluster.Males }}</td>
+                                        <td>{{ cluster.Females }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 3D Visualization Section -->
+        <div class="section-header">
+            <h2>3D Customer Segmentation</h2>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        Multi-dimensional Clustering (Age, Income, Spending Score)
+                    </div>
+                    <div class="card-body text-center">
+                        <img src="data:image/png;base64,{{ plot_3d }}" class="dashboard-image" alt="3D Cluster Plot">
+                        <p>This 3D visualization shows customer segments based on three dimensions: Age, Annual Income, and Spending Score.</p>
+                        <p>The multi-dimensional clustering provides a more comprehensive understanding of customer behavior patterns.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Gender Distribution Section -->
+        <div class="section-header">
+            <h2>Gender Distribution</h2>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header bg-secondary text-white">
+                        Gender Distribution Across Clusters
+                    </div>
+                    <div class="card-body text-center">
+                        <img src="data:image/png;base64,{{ gender_plot }}" class="dashboard-image" alt="Gender Distribution Plot">
+                        <p>This chart shows the gender distribution across different customer segments.</p>
+                        <p>Understanding gender distribution can help in designing gender-specific marketing campaigns for each segment.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Cluster Profiles Section -->
+        <div class="section-header">
+            <h2>Detailed Cluster Profiles</h2>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        Detailed Segment Profiles
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Cluster</th>
+                                        <th>Size</th>
+                                        <th>Percentage</th>
+                                        <th>Age (Mean)</th>
+                                        <th>Age (Min-Max)</th>
+                                        <th>Income (Mean)</th>
+                                        <th>Income (Min-Max)</th>
+                                        <th>Spending (Mean)</th>
+                                        <th>Spending (Min-Max)</th>
+                                        <th>Males (%)</th>
+                                        <th>Females (%)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for profile in profiles %}
+                                    <tr>
+                                        <td>{{ profile.Cluster }}</td>
+                                        <td>{{ profile.Size }}</td>
+                                        <td>{{ profile.Percentage }}</td>
+                                        <td>{{ profile['Age (Mean)'] }}</td>
+                                        <td>{{ profile['Age (Min-Max)'] }}</td>
+                                        <td>{{ profile['Income (Mean)'] }}</td>
+                                        <td>{{ profile['Income (Min-Max)'] }}</td>
+                                        <td>{{ profile['Spending (Mean)'] }}</td>
+                                        <td>{{ profile['Spending (Min-Max)'] }}</td>
+                                        <td>{{ profile['Males (%)'] }}</td>
+                                        <td>{{ profile['Females (%)'] }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Marketing Strategies Section -->
+        <div class="section-header">
+            <h2>Marketing Strategy Recommendations</h2>
+        </div>
+        <div class="row">
+            {% for strategy in strategies %}
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        {{ strategy.Cluster }}
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Characteristics</h5>
+                        <p class="card-text">{{ strategy.Characteristics }}</p>
+                        <h5 class="card-title">Suggested Strategies</h5>
+                        <p class="card-text">{{ strategy['Suggested Strategies'] }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Conclusion Section -->
+        <div class="section-header">
+            <h2>Conclusion</h2>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header bg-dark text-white">
+                        Business Insights & Next Steps
+                    </div>
+                    <div class="card-body">
+                        <p>The customer segmentation analysis has identified distinct customer groups with unique characteristics and shopping behaviors. These insights can be used to:</p>
+                        <ul>
+                            <li>Develop targeted marketing campaigns for each segment</li>
+                            <li>Personalize product recommendations based on segment preferences</li>
+                            <li>Optimize resource allocation for marketing and promotions</li>
+                            <li>Design loyalty programs tailored to each segment's needs</li>
+                            <li>Improve customer retention and acquisition strategies</li>
+                        </ul>
+                        <p>Next steps could include:</p>
+                        <ol>
+                            <li>Implement the suggested marketing strategies for each segment</li>
+                            <li>Monitor the performance and ROI of segment-specific campaigns</li>
+                            <li>Collect additional customer data to refine the segmentation</li>
+                            <li>Develop predictive models to forecast future buying behavior</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-light text-center text-lg-start mt-5">
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+            Mall Customer Segmentation Analysis
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mall Customer Data - Sample</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 20px;
+            background-color: #f8f9fa;
+        }
+        .card {
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        table {
+            font-size: 0.9rem;
+        }
+        .section-header {
+            padding: 10px 0;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #4e73df;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Sample Data</li>
+            </ol>
+        </nav>
+
+        <h1 class="text-center mb-4">Mall Customer Data</h1>
+        
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        Data Overview
+                    </div>
+                    <div class="card-body">
+                        <p>This dataset contains information about mall customers, including demographics and spending patterns. The dataset has the following features:</p>
+                        <ul>
+                            <li><strong>CustomerID</strong>: Unique identifier for each customer</li>
+                            <li><strong>Gender</strong>: Customer's gender (Male/Female)</li>
+                            <li><strong>Age</strong>: Customer's age</li>
+                            <li><strong>Annual Income (k$)</strong>: Customer's annual income in thousands of dollars</li>
+                            <li><strong>Spending Score (1-100)</strong>: Score assigned by the mall based on customer behavior and spending patterns</li>
+                        </ul>
+                        <p>The table below shows the first 50 rows of the dataset:</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        Mall Customer Dataset
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>CustomerID</th>
+                                        <th>Gender</th>
+                                        <th>Age</th>
+                                        <th>Annual Income (k$)</th>
+                                        <th>Spending Score (1-100)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for row in data %}
+                                    <tr>
+                                        <td>{{ row.CustomerID }}</td>
+                                        <td>{{ row.Gender }}</td>
+                                        <td>{{ row.Age }}</td>
+                                        <td>{{ row['Annual Income (k$)'] }}</td>
+                                        <td>{{ row['Spending Score (1-100)'] }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-md-12 text-center">
+                <a href="/" class="btn btn-primary">Return to Home</a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-light text-center text-lg-start mt-5">
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+            Mall Customer Segmentation Analysis
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 
